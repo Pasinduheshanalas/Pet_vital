@@ -1,0 +1,29 @@
+@import "../../theme/variables.scss";
+
+.content-container {
+  margin: 100px 20px 100px 220px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-tabs .ant-tabs-tab {
+  color: gray; /* Default tab color */
+  transition: color 0.3s ease;
+}
+
+.custom-tabs .ant-tabs-tab:hover {
+  color: #000080 !important; /* Hover color */
+}
+
+.custom-tabs .ant-tabs-tab-active {
+  color: "red" !important;
+  // color: #000080 !important; /* Active tab color */
+}
+
+.custom-tabs .ant-tabs-ink-bar {
+  background-color: #000080 !important; /* Active tab underline */
+}

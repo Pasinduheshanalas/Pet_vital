@@ -1,0 +1,282 @@
+// .login-page {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   height: 100vh;
+//   width: 100vw;
+// }
+
+// .login-template {
+//   width: 100%;
+//   height: 100%;
+//   display: flex;
+//   background-color: #ffffff;
+// }
+
+// .login-section {
+//   width: 50%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   padding: 40px;
+// }
+
+// .login-section-wrapper {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-start;
+// }
+
+// .login-section img {
+//   height: 50px;
+//   margin-bottom: 20px;
+// }
+
+// .login-section .title {
+//   font-size: 32px;
+//   font-weight: bold;
+//   margin-bottom: 8px;
+//   text-align: left;
+// }
+
+// .login-section .subtitle {
+//   font-size: 18px;
+//   color: #808080;
+//   margin-bottom: 40px;
+//   text-align: left;
+// }
+
+// .login-form {
+//   width: 100%;
+//   max-width: 400px;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 20px;
+// }
+
+// .input-label {
+//   font-size: 14px;
+//   color: #000;
+//   margin-bottom: 8px;
+//   text-align: left;
+// }
+
+// .input-field {
+//   display: flex;
+//   flex-direction: column;
+//   margin-bottom: 20px;
+// }
+
+// .ant-input {
+//   border-radius: 8px;
+//   border: 1px solid #ccc;
+//   padding: 10px;
+//   font-size: 16px;
+// }
+
+// .user-message {
+//   width: 50%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   background: url("../../assets/images/user-image.png") no-repeat center center;
+//   background-size: cover;
+//   position: relative;
+// }
+
+// .user-message-content {
+//   z-index: 1;
+//   background: rgba(255, 255, 255, 0.8);
+//   padding: 20px;
+//   border-radius: 10px;
+//   text-align: center;
+//   width: 80%;
+//   max-width: 300px;
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+// }
+
+// .user-message-content img {
+//   width: 50px;
+//   height: 50px;
+//   border-radius: 50%;
+// }
+
+// .user-message-content p {
+//   font-size: 16px;
+//   margin: 0;
+// }
+
+// .user-message-content strong {
+//   margin-top: 8px;
+//   display: block;
+//   font-weight: bold;
+// }
+
+// .custom-button.ant-btn-primary {
+//   background-color: #ff3152;
+//   border-color: #ff3152;
+//   color: white;
+//   font-weight: bold;
+//   border-radius: 8px;
+//   padding: 6px 15px;
+//   font-size: 16px;
+// }
+
+// .custom-button.ant-btn-primary:hover,
+// .custom-button.ant-btn-primary:focus,
+// .custom-button.ant-btn-primary:active {
+//   background-color: #ff3152;
+//   border-color: #ff3152;
+// }
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* Prevent scrolling */
+}
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  /* Ensure no scrollbars */
+}
+
+.login-template {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background-color: #ffffff;
+  overflow: hidden;
+
+  /* Ensure no scrollbars */
+}
+
+.login-section {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  box-sizing: border-box;
+
+  /* Include padding in width calculations */
+}
+
+.login-section-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.login-section img {
+  height: 50px;
+  margin-bottom: 20px;
+}
+
+.login-section .title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.login-section .subtitle {
+  font-size: 18px;
+  color: #808080;
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-label {
+  font-size: 14px;
+  color: #000;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.ant-input {
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.user-message {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../../assets/images/login-image.jpg") no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+.user-message-content {
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 80%;
+  max-width: 300px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-message-content img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.user-message-content p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.user-message-content strong {
+  margin-top: 8px;
+  display: block;
+  font-weight: bold;
+}
+
+.custom-button.ant-btn-primary {
+  background-color: #ff3152;
+  border-color: #ff3152;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 6px 15px;
+  font-size: 16px;
+}
+
+.custom-button.ant-btn-primary:hover,
+.custom-button.ant-btn-primary:focus,
+.custom-button.ant-btn-primary:active {
+  background-color: #ff3152;
+  border-color: #ff3152;
+}

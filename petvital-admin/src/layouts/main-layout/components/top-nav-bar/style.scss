@@ -1,0 +1,26 @@
+@import "../../../../theme/variables";
+
+.top-nav-bar {
+  display: flow;
+  justify-content: space-between;
+  align-items: center;
+  height: 65px;
+  padding: 0 50px; // Adjust the padding as needed
+  box-shadow: 1px 2px 9px #dbd9d9;
+  .logo-container {
+    flex-grow: 1;
+    margin-left: 0px;
+    .logo {
+      height: 65px;
+    }
+  }
+  .top-nav-bar-image {
+    margin-left: 1rem;
+  }
+  .settings-icon {
+    position: absolute;
+    top: 20px;
+    cursor: pointer;
+    right: 20px;
+  }
+}

@@ -1,0 +1,78 @@
+@import "../../../../theme/variables";
+
+// .side-nav-bar {
+// 	position: fixed;
+// 	left: 0;
+// 	z-index: 50;
+// 	justify-content: space-around;
+// 	flex-direction: column;
+// 	height: 100vh;
+// 	background: $primary-color;
+// 	.side-nav-bar-link-inactive {
+// 		font-size: 40px;
+// 		color: $primary-light-color;
+// 		text-decoration: none;
+// 		padding: 15px;
+// 		text-align: center;
+// 		margin-top: 200px;
+// 		&:hover {
+// 			background: $primary-dark-color;
+// 			color: $white-color;
+// 		}
+// 	}
+// 	.side-nav-bar-link-active {
+// 		font-size: 40px;
+// 		color: $white-color;
+// 		text-decoration: none;
+// 		padding: 15px;
+// 		text-align: center;
+// 		margin-top: 200px;
+// 		background: $primary-dark-color;
+// 		&:hover {
+// 			background: $primary-dark-color;
+// 			color: $white-color;
+// 		}
+// 	}
+// 	.app-version-text{
+// 		color: $white-color;
+// 		margin-left: 10px;
+// 		display: none;
+// 	}
+
+// }
+
+.ant-menu {
+  background-color: transparent !important;
+}
+
+.ant-menu-item-selected a {
+  color: $white-color !important;
+}
+
+.ant-layout .ant-layout-sider-trigger {
+  background-color: transparent !important;
+}
+
+.ant-menu .ant-menu-item-selected {
+  background-color: rgba($color: #000080, $alpha: 0.8);
+  color: $white-color;
+}
+
+.ant-menu-item {
+  color: $primary-light-color;
+  //mouse hover color
+  &:hover {
+    color: $white-color;
+  }
+}
+
+.profile-card {
+  // display: flex;
+  border: "1px solid #ccc";
+  border-radius: 8px;
+  padding: 10px;
+  // margin-bottom: 20px;
+  align-items: center;
+  // position: absolute;
+  // bottom: 0px;
+}

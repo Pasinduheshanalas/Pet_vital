@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "803600005563",
+    "project_id": "app-pet-vital",
+    "storage_bucket": "app-pet-vital.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803600005563:android:d6920457f8fb7d7fa8ac9e",
+        "android_client_info": {
+          "package_name": "com.example.pet_vital"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrxIdYOI3PorH2-T-jgvjp6up7OwCeM1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
