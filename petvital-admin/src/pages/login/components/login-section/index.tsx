@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Ensure you're using react-router for routing
 import Text from "../text";
 import LoginForm from "../login-form/index";
 import Logo from "../../../../assets/images/LogoMain.png";
@@ -19,6 +20,15 @@ const LoginSection: React.FC = () => {
           type="subtitle"
         />
         <LoginForm />
+        <div
+          className="signup-link"
+          style={{ marginTop: "1rem", textAlign: "center" }}
+        >
+          <span>Don't have an account? </span>
+          <Link to="/signup" style={{ color: "#1890ff", fontWeight: "bold" }}>
+            Sign up
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -1,11 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+
 import { getStorage } from "firebase/storage";
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 import { toast } from "react-toastify";
 import { message } from "antd";
 import { useNavigate } from "react-router";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlfyk7uKyb8oMyfi50nBAz3DQtWvKE1QM",
@@ -13,7 +14,7 @@ const firebaseConfig = {
   projectId: "app-pet-vital",
   storageBucket: "app-pet-vital.firebasestorage.app",
   messagingSenderId: "803600005563",
-  appId: "1:803600005563:web:bf152b55ab7a20c1a8ac9e"
+  appId: "1:803600005563:web:bf152b55ab7a20c1a8ac9e",
 };
 
 export const app = initializeApp(firebaseConfig);
@@ -41,7 +42,7 @@ export const logInWithEmailAndPassword = async (
     console.error(err);
     setError(err);
     // alert(err.message);
-    message.error(err.code.split("/")[1]);
+    // message.error(err.code.split("/")[1]);
   }
 };
 

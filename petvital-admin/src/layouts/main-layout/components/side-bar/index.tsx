@@ -26,7 +26,7 @@ import "./style.scss";
 import useWindowDimensions from "../../../../utils/useWindowDimensions";
 import LogoUrl from "../../../../assets/images/logo.png";
 import { IoIosLogOut } from "react-icons/io";
-import ProfileIcon from "../../../../assets/images/profile.png";
+import ProfileIcon from "../../../../assets/images/care-center.jpg";
 import { logout } from "../../../../service/firebase/firebase-config";
 import { logoutUser } from "../../../../pages/login/authAction";
 
@@ -125,6 +125,12 @@ const SideBar: React.FC<{}> = () => {
           >
             Manage Vaccine
           </Menu.Item>
+          <Menu.Item
+            key="/event"
+            icon={<MedicineBoxOutlined style={{ fontSize: "20px" }} />}
+          >
+            Events
+          </Menu.Item>
         </Menu>
         <hr style={{ marginTop: "50px", marginBottom: "20px" }} />
         <div className="profile-card">
@@ -152,7 +158,7 @@ const SideBar: React.FC<{}> = () => {
                     className="profile-name"
                     style={{ fontSize: "14px", fontWeight: "600" }}
                   >
-                    Villa Resort
+                    PetNest Clinic
                   </div>
                   <div
                     className="profile-email"
@@ -162,7 +168,7 @@ const SideBar: React.FC<{}> = () => {
                       fontWeight: "400",
                     }}
                   >
-                    villauser@gmail.com
+                    petnestcli@gmail.com
                   </div>
                 </div>
               </div>

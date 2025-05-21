@@ -16,7 +16,6 @@ let transporter = nodemailer.createTransport({
 });
 
 class Order {
-
   static async placeOrder(cartList, total, email, petId, petclinicId) {
     try {
       const orderId = Math.random().toString(36).substring(2, 9);
@@ -62,7 +61,7 @@ class Order {
       throw new Error(err.message);
     }
   }
-  
+
   static async getOrdersByStatus(status, petclinicId) {
     try {
       const snapshot = await db
@@ -70,6 +69,8 @@ class Order {
         .where("State", "==", status)
         .where("_vpetclinic", "==", petclinicId)
         .get();
+
+      console.log({ snapshot });
 
       if (snapshot.empty) {
         throw new Error("Orders not found.");

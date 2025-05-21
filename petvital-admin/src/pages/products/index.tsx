@@ -13,6 +13,7 @@ import axios from "axios";
 import EditProduct from "./components/editProduct";
 import DeleteModal from "../../components/deleteModal/DeleteModal";
 import { log } from "node:console";
+import SyncLoader from "react-spinners/SyncLoader";
 
 const Products: React.FC = () => {
   const { data, loading, error } = useSelector(
@@ -58,13 +59,16 @@ const Products: React.FC = () => {
       title: "Product Image",
       dataIndex: "ProductImageUrl",
       key: "ProductImageUrl",
-      render: (_text: string) => (
-        <img
-          src="https://allforpets.lk/wp-content/uploads/2025/01/Branch-Dog-Chew-Toy-Roast-Chicken-600x600.webp" // <-- replace with your hardcoded image URL
-          // alt="Product"
-          style={{ width: "60px", height: "60px", objectFit: "cover" }}
-        />
-      ),
+      render: (url: string) =>
+        url ? (
+          <img
+            src={url}
+            alt="Product"
+            style={{ width: "60px", height: "60px", objectFit: "cover" }}
+          />
+        ) : (
+          <span>No Image</span>
+        ),
     },
     {
       title: "Price",
@@ -78,35 +82,6 @@ const Products: React.FC = () => {
     },
   ];
 
-  // const columns = [
-  //   // {
-  //   //   title: "Id",
-  //   //   dataIndex: "id",
-  //   //   key: "id",
-  //   // },
-  //   {
-  //     title: "Product Name",
-  //     dataIndex: "ProductName",
-  //     key: "ProductName",
-  //   },
-  //   {
-  //     title: "Product Image",
-  //     dataIndex: "ProductImageUrl",
-  //     key: "ProductImageUrl",
-  //     render: (text: string) =>
-  //       text.length > 30 ? `${text.substring(0, 30)}...` : text,
-  //   },
-  //   {
-  //     title: "Price",
-  //     dataIndex: "Price",
-  //     key: "Price",
-  //   },
-  //   {
-  //     title: "Quentity",
-  //     dataIndex: "Quantity",
-  //     key: "Quantity",
-  //   },
-  // ];
   const handleDeleteModalOk = async () => {
     console.log("Product ID:", productId);
 
@@ -304,15 +279,27 @@ const Products: React.FC = () => {
         </Col>
       </Row>
       <Card>
-        <DetailTable
-          columns={columns}
-          dataSource={productsData}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          // onDelete={handleDelete}
-          // onDownload={handleDownload}
-          // onRowClick={handleRowClick}
-        />
+        {isLoading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "20px 0",
+            }}
+          >
+            <SyncLoader size={12} />
+          </div>
+        ) : (
+          <DetailTable
+            columns={columns}
+            dataSource={productsData}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            // onDelete={handleDelete}
+            // onDownload={handleDownload}
+            // onRowClick={handleRowClick}
+          />
+        )}
       </Card>
       <AddProduct
         setIsEditAccountModalVisible={setIsAddProductModalVisible}

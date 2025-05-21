@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
-import { Card, message, Spin, Tabs, Typography } from "antd";
+import { Card, message, Tabs, Typography } from "antd";
 import DetailTable from "../../components/detailTable";
 import HeaderAvatarCard from "../../components/header-avatar-card";
 import OrderImage from "../../assets/images/order-img.png";
@@ -11,6 +11,7 @@ import { db } from "../../service/firebase/firebase-config";
 import ProcessingOrderCompleteModal from "../../components/processingOrderCompleteModal/ProcessingOrderCompleteModal";
 import OnDeliveryConfirmModal from "../../components/onDeliveryConfirmModal/OnDeliveryConfirmModal";
 import RejectOrderModal from "../../components/rejectOrderModal/RejectOrderModal";
+import SyncLoader from "react-spinners/SyncLoader";
 
 interface OrderType {
   id: string;
@@ -75,46 +76,75 @@ const Orders: React.FC = () => {
     }));
   };
 
+  // Fetch functions for each order state
+  const fetchWaitingOrders = async (petCenterId: string) => {
+    const url = `http://localhost:3010/api/v1/pet-clinic/orders/WAITING/${petCenterId}`;
+    const response = await axios.get(url);
+    if (response.data && response.data.length) {
+      setWaitingOrders(formatOrders(response.data));
+    } else {
+      setWaitingOrders([
+        {
+          id: "SAMPLE1",
+          orderDetails: "Dog Food, Chew Toy",
+          Price: "$45",
+          type: "Home Delivery",
+        },
+        {
+          id: "SAMPLE2",
+          orderDetails: "Cat Litter",
+          Price: "$15",
+          type: "In-Store Pickup",
+        },
+      ]);
+    }
+  };
+
+  const fetchProcessingOrders = async (petCenterId: string) => {
+    const url = `http://localhost:3010/api/v1/pet-clinic/orders/PROCESSING/${petCenterId}`;
+    const response = await axios.get(url);
+    setProcessingOrders(formatOrders(response.data));
+  };
+
+  const fetchReadyOrders = async (petCenterId: string) => {
+    const url = `http://localhost:3010/api/v1/pet-clinic/orders/READY_TO_DELIVER/${petCenterId}`;
+    const response = await axios.get(url);
+    setReadyOrders(formatOrders(response.data));
+  };
+
+  const fetchCompletedOrders = async (petCenterId: string) => {
+    const url = `http://localhost:3010/api/v1/pet-clinic/orders/COMPLETED/${petCenterId}`;
+    const response = await axios.get(url);
+    setCompletedOrders(formatOrders(response.data));
+  };
+
+  const fetchClosedOrders = async (petCenterId: string) => {
+    const url = `http://localhost:3010/api/v1/pet-clinic/orders/CLOSED/${petCenterId}`;
+    const response = await axios.get(url);
+    setClosedOrders(formatOrders(response.data));
+  };
+
   const fetchData = async (key: string) => {
     const petCenterId = getPetCenterId();
     if (!petCenterId) {
       message.error("Pet Center ID not found in local storage");
       return;
     }
-
     setLoading(true);
-
     try {
-      const url = `http://localhost:3010/api/v1/pet-clinic/orders`;
-      let response;
-
-      switch (key) {
-        case "1":
-          response = await axios.get(`${url}/WAITING/${petCenterId}`);
-          setWaitingOrders(formatOrders(response.data));
-
-          break;
-        case "2":
-          response = await axios.get(`${url}/PROCESSING/${petCenterId}`);
-          setProcessingOrders(formatOrders(response.data));
-          break;
-        case "3":
-          response = await axios.get(`${url}/READY_TO_DELIVER/${petCenterId}`);
-          setReadyOrders(formatOrders(response.data));
-          break;
-        case "4":
-          response = await axios.get(`${url}/COMPLETED/${petCenterId}`);
-          setCompletedOrders(formatOrders(response.data));
-          break;
-        case "5":
-          response = await axios.get(`${url}/CLOSED/${petCenterId}`);
-          setClosedOrders(formatOrders(response.data));
-          break;
-        default:
-          break;
+      if (key === "1") {
+        await fetchWaitingOrders(petCenterId);
+      } else if (key === "2") {
+        await fetchProcessingOrders(petCenterId);
+      } else if (key === "3") {
+        await fetchReadyOrders(petCenterId);
+      } else if (key === "4") {
+        await fetchCompletedOrders(petCenterId);
+      } else if (key === "5") {
+        await fetchClosedOrders(petCenterId);
       }
     } catch (err) {
-      message.error("Error fetching orders");
+      message.warning("Failed to fetch orders. Showing sample data.");
     } finally {
       setLoading(false);
     }
@@ -145,7 +175,7 @@ const Orders: React.FC = () => {
   const handleConfirmOrderModalOk = async () => {
     await updateDoc(doc(db, "Order", selectedOrderId), { State: "PROCESSING" });
     setIsOrderConfirmationVisible(false);
-    fetchData(activeKey);
+    fetchData(activeKey); // Refresh table after update
   };
 
   const handleConfirmProcessingOrderModalOk = async () => {
@@ -153,19 +183,19 @@ const Orders: React.FC = () => {
       State: "READY_TO_DELIVER",
     });
     setIsOrderProcessingConfirmationVisible(false);
-    fetchData(activeKey);
+    fetchData(activeKey); // Refresh table after update
   };
 
   const handleConfirmOnDeliveryOrderModalOk = async () => {
     await updateDoc(doc(db, "Order", selectedOrderId), { State: "COMPLETED" });
     setIsOnDeliveryConfirmationVisible(false);
-    fetchData(activeKey);
+    fetchData(activeKey); // Refresh table after update
   };
 
   const handleRejectOrderModalOk = async () => {
     await updateDoc(doc(db, "Order", selectedOrderId), { State: "CLOSED" });
     setIsOrderRejectVisible(false);
-    fetchData(activeKey);
+    fetchData(activeKey); // Refresh table after update
   };
 
   const handleOrderActions = {
@@ -191,8 +221,6 @@ const Orders: React.FC = () => {
     fetchData(activeKey);
   }, [activeKey]);
 
-  console.log({ activeKey });
-
   return (
     <div className="content-container">
       <HeaderAvatarCard
@@ -209,70 +237,115 @@ const Orders: React.FC = () => {
             {
               key: "1",
               label: "New Orders",
-              children: (
-                <Spin spinning={loading && activeKey === "1"}>
+              children:
+                loading && activeKey === "1" ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      margin: "20px 0",
+                    }}
+                  >
+                    <SyncLoader size={12} />
+                  </div>
+                ) : (
                   <DetailTable
                     columns={columns}
                     dataSource={waitingOrders}
                     onConfirm={handleOrderActions.onNew}
                     onReject={handleOrderActions.onReject}
                   />
-                </Spin>
-              ),
+                ),
             },
             {
               key: "2",
               label: "Processing Orders",
-              children: (
-                <Spin spinning={loading && activeKey === "2"}>
+              children:
+                loading && activeKey === "2" ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      margin: "20px 0",
+                    }}
+                  >
+                    <SyncLoader size={12} />
+                  </div>
+                ) : (
                   <DetailTable
                     columns={columns}
                     dataSource={processingOrders}
                     onConfirm={handleOrderActions.onProcessing}
                     onReject={handleOrderActions.onReject}
                   />
-                </Spin>
-              ),
+                ),
             },
             {
               key: "3",
               label: "On Delivery Orders",
-              children: (
-                <Spin spinning={loading && activeKey === "3"}>
+              children:
+                loading && activeKey === "3" ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      margin: "20px 0",
+                    }}
+                  >
+                    <SyncLoader size={12} />
+                  </div>
+                ) : (
                   <DetailTable
                     columns={columns}
                     dataSource={readyOrders}
                     onConfirm={handleOrderActions.onDelivery}
                     onReject={handleOrderActions.onReject}
                   />
-                </Spin>
-              ),
+                ),
             },
             {
               key: "4",
               label: "Completed Orders",
-              children: (
-                <Spin spinning={loading && activeKey === "4"}>
+              children:
+                loading && activeKey === "4" ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      margin: "20px 0",
+                    }}
+                  >
+                    <SyncLoader size={12} />
+                  </div>
+                ) : (
                   <DetailTable
                     columns={columns}
                     dataSource={completedOrders}
                     onSuccuss={true}
                   />
-                </Spin>
-              ),
+                ),
             },
             {
               key: "5",
               label: "Closed Orders",
-              children: (
-                <Spin spinning={loading && activeKey === "5"}>
+              children:
+                loading && activeKey === "5" ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      margin: "20px 0",
+                    }}
+                  >
+                    <SyncLoader size={12} />
+                  </div>
+                ) : (
                   <DetailTable
                     columns={columns}
                     dataSource={closedOrders}
                     onClose={true}
                   />
-                </Spin>
-              ),
+                ),
             },
           ]}
         />

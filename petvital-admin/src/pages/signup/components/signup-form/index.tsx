@@ -10,17 +10,21 @@ const SignupForm: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-
   const handleSignUp = async () => {
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
     try {
       setLoading(true);
       const response = await axios.post(
         "http://localhost:3010/api/v1/pet-clinic/register/",
         {
-          name: name, 
+          name: name,
           email: email,
           password: password,
         }
@@ -32,7 +36,6 @@ const SignupForm: React.FC = () => {
     } catch (error) {
       setLoading(false);
       console.error("Error:", error);
-      message.error("Something went wrong. Please try again!");
       setError("Signup failed. Please try again.");
     }
   };
@@ -68,6 +71,16 @@ const SignupForm: React.FC = () => {
         height="50px"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        style={{ backgroundColor: "#ffffff", padding: "10px" }}
+      />
+      <TextInput
+        label="Confirm Password"
+        placeholder="************"
+        type="password"
+        width="440px"
+        height="50px"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
         style={{ backgroundColor: "#ffffff", padding: "10px" }}
       />
       {error && <div style={{ color: "red" }}>{error}</div>}

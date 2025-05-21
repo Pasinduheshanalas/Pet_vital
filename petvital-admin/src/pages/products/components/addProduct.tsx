@@ -2,9 +2,9 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form, Input, message, Modal, Upload, UploadProps } from "antd";
 import React, { useState } from "react";
 import { v4 } from "uuid";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage } from "firebase/storage";
 import { app } from "../../../service/firebase/firebase-config"; // Ensure correct path
-import { log } from "console";
+import { createClient } from "@supabase/supabase-js";
 
 interface EditAccountProps {
   isVisible: boolean;
@@ -12,7 +12,28 @@ interface EditAccountProps {
   handleOk: (formData: any) => Promise<void>;
 }
 
-const storage = getStorage(app); // Ensure Firebase app is passed
+// Replace with your actual Supabase URL and public anon key
+const supabase = createClient(
+  "https://wkjxjkbsvgchzdvhlpnc.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indranhqa2JzdmdjaHpkdmhscG5jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3Mjk4MDAsImV4cCI6MjA2MzMwNTgwMH0.rsMbFQSppXMUV4tMAu8ughzAVb73XXXVe45CWq7p94E"
+);
+
+async function uploadImage(file: File): Promise<string | undefined> {
+  const fileExt = file.name.split(".").pop();
+  const filePath = `${Date.now()}.${fileExt}`;
+  const { data, error } = await supabase.storage
+    .from("images") // Bucket name
+    .upload(filePath, file);
+  if (error) {
+    message.error("Upload error: " + error.message);
+    return;
+  }
+  // Get public URL
+  const { data: publicUrlData } = supabase.storage
+    .from("images")
+    .getPublicUrl(filePath);
+  return publicUrlData.publicUrl;
+}
 
 const AddProduct: React.FC<EditAccountProps> = ({
   isVisible,
@@ -51,18 +72,6 @@ const AddProduct: React.FC<EditAccountProps> = ({
     }
   };
 
-  const beforeUpload = (file: File) => {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error("Image must be smaller than 2MB!");
-    }
-    return isJpgOrPng && isLt2M;
-  };
-
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -76,21 +85,13 @@ const AddProduct: React.FC<EditAccountProps> = ({
       return;
     }
     if (info.file.originFileObj) {
-      const file = info.file.originFileObj;
-      try {
-        // const storageRef = ref(storage, `images/${file.name + v4()}`);
-        // const storageRef = ref(storage, `images/${selectedImage.name + v4()}`);
-        // await uploadBytes(storageRef, file);
-        // const url = await getDownloadURL(storageRef);
-        setImageUrl(
-          "https://www.petshopdirect.com.au/auto/thumbnail/auto/sb-plugin-gopix/homeBanner/pet_shop_direct_banner_1.jpg?maxwidth=1480&type=jpeg"
-        );
+      setLoading(true);
+      const url = await uploadImage(info.file.originFileObj);
+      if (url) {
+        setImageUrl(url);
         message.success("Image uploaded successfully!");
-      } catch (error) {
-        message.error("Upload failed!");
-      } finally {
-        setLoading(false);
       }
+      setLoading(false);
     }
   };
 
@@ -115,7 +116,7 @@ const AddProduct: React.FC<EditAccountProps> = ({
             listType="picture-card"
             className="avatar-uploader"
             showUploadList={false}
-            beforeUpload={beforeUpload}
+            beforeUpload={() => true}
             onChange={handleChange}
           >
             {imageUrl ? (

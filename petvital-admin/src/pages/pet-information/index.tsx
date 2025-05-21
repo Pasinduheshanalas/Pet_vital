@@ -132,7 +132,6 @@ const Orders: React.FC = () => {
       _vpetclinic: petCenterId,
       Email: petBasicData?.email,
     };
-    console.log({ data });
 
     try {
       const res = await axios.post(

@@ -6,9 +6,16 @@ import io
 
 app = Flask(__name__)
 
+import os
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(base_dir, "SkinDisease.h5")
+model = tf.keras.models.load_model(model_path)
+
 # model = tf.keras.models.load_model("SkinDisease.h5")
 # model = tf.keras.models.load_model("D:\Reaserch new\test-backend-api\New folder\dog-diseases-\python-backend\SkinDisease.h5")
-model = tf.keras.models.load_model("D:\\Reaserch new\\test-backend-api\\New folder\\dog-diseases-\\python-backend\\SkinDisease.h5")
+# model = tf.keras.models.load_model("C:/Users/pasindua/Desktop/new test/Pet_vital/backend/python-backend/SkinDisease.h5")
+
 
 
 

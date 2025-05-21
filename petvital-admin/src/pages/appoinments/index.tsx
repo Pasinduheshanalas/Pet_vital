@@ -9,6 +9,7 @@ import AppoinmentImage from "../../assets/images/appoinment.png";
 import ConfirmModal from "../../components/confirmModal/ConfirmModal";
 import axios from "axios";
 import CompletedModal from "../../components/completedModal/completedModal";
+import SyncLoader from "react-spinners/SyncLoader";
 
 const columnsTab1 = [
   { title: "Id", dataIndex: "id", key: "id" },
@@ -51,9 +52,9 @@ const Appoinmets: React.FC = () => {
       setFilteredAppointmentData(
         appointmentData.filter(
           (item: any) =>
-            item.petName.toLowerCase().includes(lowercasedValue) ||
-            item.Remarks.toLowerCase().includes(lowercasedValue) ||
-            item.Status.toLowerCase().includes(lowercasedValue)
+            (item.petName || "").toLowerCase().includes(lowercasedValue) ||
+            (item.Remarks || "").toLowerCase().includes(lowercasedValue) ||
+            (item.Status || "").toLowerCase().includes(lowercasedValue)
         )
       );
     }, 300),
@@ -66,9 +67,9 @@ const Appoinmets: React.FC = () => {
       setFilteredApprovedData(
         approvedAppointmentData.filter(
           (item: any) =>
-            item.petName.toLowerCase().includes(lowercasedValue) ||
-            item.Remarks.toLowerCase().includes(lowercasedValue) ||
-            item.Status.toLowerCase().includes(lowercasedValue)
+            (item.petName || "").toLowerCase().includes(lowercasedValue) ||
+            (item.Remarks || "").toLowerCase().includes(lowercasedValue) ||
+            (item.Status || "").toLowerCase().includes(lowercasedValue)
         )
       );
     }, 300),
@@ -233,11 +234,23 @@ const Appoinmets: React.FC = () => {
                       </div>
                     </Col>
                   </Row>
-                  <DetailTable
-                    columns={columnsTab1}
-                    dataSource={filteredAppointmentData}
-                    onConfirm={handleConfirm}
-                  />
+                  {isLoading ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        margin: "20px 0",
+                      }}
+                    >
+                      <SyncLoader size={12} />
+                    </div>
+                  ) : (
+                    <DetailTable
+                      columns={columnsTab1}
+                      dataSource={filteredAppointmentData}
+                      onConfirm={handleConfirm}
+                    />
+                  )}
                   <ConfirmModal
                     visible={isConfirmConfirmationVisible}
                     onCancel={handleConfirmModalCancel}
@@ -271,11 +284,23 @@ const Appoinmets: React.FC = () => {
                       </div>
                     </Col>
                   </Row>
-                  <DetailTable
-                    columns={columnsTab2}
-                    dataSource={filteredApprovedData}
-                    approved={true}
-                  />
+                  {isLoading ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        margin: "20px 0",
+                      }}
+                    >
+                      <SyncLoader size={12} />
+                    </div>
+                  ) : (
+                    <DetailTable
+                      columns={columnsTab2}
+                      dataSource={filteredApprovedData}
+                      approved={true}
+                    />
+                  )}
                   <CompletedModal
                     visible={isCompletedVisible}
                     onCancel={handleCompetedModalCancel}

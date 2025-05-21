@@ -69,7 +69,17 @@ const LoginForm: React.FC = () => {
         onChange={(e) => setPassword(e.target.value)}
         style={{ backgroundColor: "#ffffff", padding: "10px" }}
       />
-      {error && <div style={{ color: "red" }}>{error}</div>}
+      {error && (
+        <div style={{ color: "red" }}>
+          {
+            (typeof error === "string"
+              ? error
+              : (error as any)?.message || String(error)
+            ).match(/\(auth\/([^)]+)\)/)?.[1]
+          }
+        </div>
+      )}
+
       <div
         style={{
           border: "1px solid #000080",

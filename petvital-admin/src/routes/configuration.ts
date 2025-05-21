@@ -10,6 +10,7 @@ const Appoinments = lazy(() => import("../pages/appoinments/index"));
 const Orders = lazy(() => import("../pages/orders/index"));
 const Products = lazy(() => import("../pages/products/index"));
 const ManageVaccine = lazy(() => import("../pages/manage-vaccine/index"));
+const Event = lazy(() => import("../pages/event/index"));
 
 export const routeNames = {
   HOME: "/",
@@ -23,6 +24,7 @@ export const routeNames = {
   MANAGE_VACCINE: "/manage-vaccine",
   LOGIN: "/login",
   SIGNUP: "/signup",
+  EVENT: "/event",
 };
 
 export const routeInfo: RouteInfo[] = [
@@ -77,5 +79,9 @@ export const routeInfo: RouteInfo[] = [
   {
     path: routeNames.MANAGE_VACCINE,
     component: ManageVaccine,
+  },
+  {
+    path: routeNames.EVENT,
+    component: Event,
   },
 ];

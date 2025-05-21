@@ -24,7 +24,8 @@ const ConfirmModal: React.FC<DeleteModalProps> = ({
       <div style={{ textAlign: "center" }}>
         <h2 style={{ fontWeight: 600 }}>Confirm</h2>
         <p style={{ margin: "16px 0", fontSize: "16px", color: "#6B7280" }}>
-          Are you sure you want to complete the selected vaccine?
+          Are you sure you want to complete the Are you sure to confirm this
+          appointment?
         </p>
       </div>
       <div
