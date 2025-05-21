@@ -8,7 +8,13 @@ app = Flask(__name__)
 
 # model = tf.keras.models.load_model("SkinDisease.h5")
 # model = tf.keras.models.load_model("D:\Reaserch new\test-backend-api\New folder\dog-diseases-\python-backend\SkinDisease.h5")
-model = tf.keras.models.load_model("D:\\Reaserch new\\test-backend-api\\New folder\\dog-diseases-\\python-backend\\SkinDisease.h5")
+# model = tf.keras.models.load_model("python-backend/SkinDisease.h5")
+
+import os
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(base_dir, "SkinDisease.h5")
+model = tf.keras.models.load_model(model_path)
 
 
 
@@ -63,4 +69,4 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    app.run(port=3010)

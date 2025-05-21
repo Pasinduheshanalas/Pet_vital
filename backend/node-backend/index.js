@@ -30,7 +30,7 @@ app.post("/predict", upload.single("file"), async (req, res) => {
     console.log("============ Sending to Flask");
 
     const response = await axios.post(
-      "http://localhost:5000/predict",
+      "http://localhost:3010/predict",
       formData,
       {
         headers: formData.getHeaders(),
