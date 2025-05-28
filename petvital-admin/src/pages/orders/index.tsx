@@ -80,24 +80,24 @@ const Orders: React.FC = () => {
   const fetchWaitingOrders = async (petCenterId: string) => {
     const url = `http://localhost:3010/api/v1/pet-clinic/orders/WAITING/${petCenterId}`;
     const response = await axios.get(url);
-    if (response.data && response.data.length) {
-      setWaitingOrders(formatOrders(response.data));
-    } else {
-      setWaitingOrders([
-        {
-          id: "SAMPLE1",
-          orderDetails: "Dog Food, Chew Toy",
-          Price: "$45",
-          type: "Home Delivery",
-        },
-        {
-          id: "SAMPLE2",
-          orderDetails: "Cat Litter",
-          Price: "$15",
-          type: "In-Store Pickup",
-        },
-      ]);
-    }
+    // if (response.data && response.data.length) {
+    setWaitingOrders(formatOrders(response.data));
+    // } else {
+    //   setWaitingOrders([
+    //     {
+    //       id: "SAMPLE1",
+    //       orderDetails: "Dog Food, Chew Toy",
+    //       Price: "$45",
+    //       type: "Home Delivery",
+    //     },
+    //     {
+    //       id: "SAMPLE2",
+    //       orderDetails: "Cat Litter",
+    //       Price: "$15",
+    //       type: "In-Store Pickup",
+    //     },
+    //   ]);
+    // }
   };
 
   const fetchProcessingOrders = async (petCenterId: string) => {
@@ -144,7 +144,7 @@ const Orders: React.FC = () => {
         await fetchClosedOrders(petCenterId);
       }
     } catch (err) {
-      message.warning("Failed to fetch orders. Showing sample data.");
+      // message.warning("Failed to fetch orders. Showing sample data.");
     } finally {
       setLoading(false);
     }
@@ -175,7 +175,10 @@ const Orders: React.FC = () => {
   const handleConfirmOrderModalOk = async () => {
     await updateDoc(doc(db, "Order", selectedOrderId), { State: "PROCESSING" });
     setIsOrderConfirmationVisible(false);
-    fetchData(activeKey); // Refresh table after update
+    // Only refresh the tables that are affected by the state change
+    await fetchProcessingOrders(getPetCenterId()!);
+    // Optionally, refresh waiting orders if you want to remove the updated order from that table
+    await fetchWaitingOrders(getPetCenterId()!);
   };
 
   const handleConfirmProcessingOrderModalOk = async () => {
@@ -183,19 +186,25 @@ const Orders: React.FC = () => {
       State: "READY_TO_DELIVER",
     });
     setIsOrderProcessingConfirmationVisible(false);
-    fetchData(activeKey); // Refresh table after update
+    await fetchReadyOrders(getPetCenterId()!);
+    await fetchProcessingOrders(getPetCenterId()!);
   };
 
   const handleConfirmOnDeliveryOrderModalOk = async () => {
     await updateDoc(doc(db, "Order", selectedOrderId), { State: "COMPLETED" });
     setIsOnDeliveryConfirmationVisible(false);
-    fetchData(activeKey); // Refresh table after update
+    await fetchCompletedOrders(getPetCenterId()!);
+    await fetchReadyOrders(getPetCenterId()!);
   };
 
   const handleRejectOrderModalOk = async () => {
     await updateDoc(doc(db, "Order", selectedOrderId), { State: "CLOSED" });
     setIsOrderRejectVisible(false);
-    fetchData(activeKey); // Refresh table after update
+    // Refresh all relevant tables after rejection
+    await fetchClosedOrders(getPetCenterId()!);
+    await fetchWaitingOrders(getPetCenterId()!);
+    await fetchProcessingOrders(getPetCenterId()!);
+    await fetchReadyOrders(getPetCenterId()!);
   };
 
   const handleOrderActions = {

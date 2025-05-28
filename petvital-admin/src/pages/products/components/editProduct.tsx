@@ -97,7 +97,7 @@ const EditProduct: React.FC<EditProductProps> = ({
         ProductName: values.ProductName,
         Price: values.Price,
         Quantity: values.Quantity,
-        Status: "Active",
+        Status: "ACTIVE",
       };
       await handleOk(formData);
       setIsEditProductModalVisible(false);

@@ -58,7 +58,7 @@ const AddProduct: React.FC<EditAccountProps> = ({
         ProductImageUrl: imageUrl || "",
         Price: values.Price,
         Quantity: values.quantity,
-        Status: "Active",
+        Status: "ACTIVE",
         _vpetclinic: petCenterId,
       };
       console.log("Payload:", formData);
